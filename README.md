@@ -176,8 +176,3 @@ If you are developer, you can consider developing below feature and send the pul
 - Deployment and hosting options.
 - Implementing a payment gateway.
 - Enhancing user authentication and order history.
-
-
-
-
-
