@@ -1,0 +1,51 @@
+- name: Install Node.js
+  ansible.builtin.apt: |
+    name: 
+     - nodejs
+     - npm 
+  become: yes
+
+- name: Install PM2
+  community.general.npm:
+    name: pm2
+    global: yes
+  become: yes
+
+# --- DEPLOY CODE ---
+- name: Ensure app directory exists
+  ansible.builtin.file:
+    path: "{{ app_dest }}"
+    state: directory
+    owner: "{{ app_user }}"
+    group: www-data
+    mode: '0755'
+
+- name: Sync app code
+  ansible.posix.synchronize:
+    src: "{{ playbook_dir }}/../"
+    dest: "{{ app_dest }}"
+    rsync_opts:
+      - "--exclude=.git"
+      - "--exclude=node_modules"
+      - "--exclude=ansible"
+
+# --- CONFIG ---
+- name: Deploy config file
+  ansible.builtin.template:
+    src: config.json.j2
+    dest: "{{ app_dest }}/config/config.json"
+
+# --- DEPENDENCIES ---
+- name: Install npm dependencies
+  community.general.npm:
+    path: "{{ app_dest }}"
+    production: yes
+
+# --- START APP ---
+- name: Start app with PM2
+  ansible.builtin.shell: |
+    pm2 start server.js --name epicbook || pm2 restart epicbook
+    pm2 save
+  args:
+    chdir: "{{ app_dest }}"
+  become_user: "{{ app_user }}"

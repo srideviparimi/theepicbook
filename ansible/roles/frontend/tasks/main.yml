@@ -1,0 +1,33 @@
+- name: run common tasks like update and upgrade
+  ansible.builtin.import_role:
+    name: myrole
+    tasks_from: common
+    
+- name: Install nginx
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+
+- name: Deploy epicbook site config
+  ansible.builtin.template:
+    src: epicbook.conf.j2
+    dest: /etc/nginx/sites-available/epicbook
+  notify: Reload Nginx
+
+- name: Enable epicbook site
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/epicbook
+    dest: /etc/nginx/sites-enabled/epicbook
+    state: link
+
+- name: Remove default Nginx site
+  ansible.builtin.file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: Ensure Nginx is running and enabled
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: yes
+

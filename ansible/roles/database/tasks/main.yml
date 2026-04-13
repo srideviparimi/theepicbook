@@ -1,0 +1,35 @@
+# --- STEP 1: CREATE DATABASE ---
+- name: Create the epicbook database
+  community.mysql.mysql_db:
+    name: epicbook
+    state: present
+    login_host: "{{ db_host }}"
+    login_user: "{{ db_admin_user }}"
+    login_password: "{{ db_admin_password }}"
+
+# --- STEP 2: CREATE APP USER ---
+- name: Create Database User
+  community.mysql.mysql_user:
+    name: ebadmin
+    password: "{{ db_user_password }}"
+    priv: 'epicbook.*:ALL'
+    state: present
+    host: '%'
+    login_host: "{{ db_host }}"
+    login_user: "{{ db_admin_user }}"
+    login_password: "{{ db_admin_password }}"
+
+# --- STEP 3: IMPORT SCHEMA ---
+- name: Import Database Schema and Seeds
+  community.mysql.mysql_db:
+    name: epicbook
+    state: import
+    target: "{{ app_dest }}/db/{{ item }}"
+    login_host: "{{ db_host }}"
+    login_user: "{{ db_admin_user }}"
+    login_password: "{{ db_admin_password }}"
+  loop:
+    - BuyTheBook_Schema.sql
+    - author_seed.sql
+    - books_seed.sql
+  ignore_errors: yes

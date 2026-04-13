@@ -1,0 +1,18 @@
+---
+- name: Frontend configuration
+  hosts: frontend
+  become: true
+  roles:
+    - frontend
+ 
+- name: backend configuration
+  hosts: backend
+  become: true
+  roles:
+    - backend
+ 
+- name: database configuration
+  hosts: database
+  become: true
+  roles:
+    - database

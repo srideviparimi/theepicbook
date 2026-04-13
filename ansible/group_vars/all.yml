@@ -1,0 +1,17 @@
+# APP
+app_name: epicbook
+app_dest: /var/www/epicbook
+app_user: azureuser
+
+# DB (Azure MySQL)
+db_host: your-mysql-server.mysql.database.azure.com
+db_name: epicbook
+
+db_admin_user: youradmin@your-mysql-server
+db_admin_password: YourAdminPassword
+
+db_user: ebadmin
+db_user_password: StrongPassword123!
+
+# NETWORK
+backend_host: 10.0.1.5
