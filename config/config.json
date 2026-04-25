@@ -1,16 +1,16 @@
 {
   "development": {
     "username": "root",
-    "password": "demo1234",
-    "database": "bookstore",
-    "host": "127.0.0.1",
+    "password": "Khammam12345",
+    "database": "epicbook",
+    "host": "db",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
     "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
+    "database": "epicbook",
+    "host": "db",
     "dialect": "mysql"
   },
   "production": {
