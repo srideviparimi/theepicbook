@@ -20,15 +20,6 @@
     group: www-data
     mode: '0755'
 
-- name: Sync app code
-  ansible.posix.synchronize:
-    src: "{{ playbook_dir }}/../"
-    dest: "{{ app_dest }}"
-    rsync_opts:
-      - "--exclude=.git"
-      - "--exclude=node_modules"
-      - "--exclude=ansible"
-
 # --- CONFIG ---
 - name: Deploy config file
   ansible.builtin.template:
